@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bluesking.blog.persist.mapper.R2_equit_distMapper" >
+
+	<!-- pojo类属性和对应表的结果集映射关系 -->
+	<resultMap id="BaseResultMap" type="cn.bluesking.blog.model.entity.R2_equit_dist">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="r2_id" property="r2_id" jdbcType="BIGINT" />
+	</resultMap>
+
+	<!-- 条件从句 -->
+	<sql id="Example_Where_Clause">
+		<where>
+			<!-- 读取criteria列表集合中的元素 -->
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<!-- 判断criteria是否有条件 -->
+				<if test="criteria.valid">
+					<!-- 设置前后缀包裹，以and分隔 -->
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<!-- 遍历每一个criteria中的List<Criterion>自定义条件列表集合 -->
+						<foreach collection="criteria.criteria" item="criterion">
+							<!-- 有选择的插入，相当于switch -->
+							<choose>
+								<!-- 无数值数据，用于field is null和field is not null -->
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<!-- 单一数据 -->
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<!-- 两个数据，用于between和not between语句 -->
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<!-- 用于in和not in -->
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+
+	<!-- 条件从句 -->
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<!-- 读取criteria列表集合中的元素 -->
+			<foreach collection="example.oredCriteria" item="criteria" separator="or">
+				<!-- 判断criteria是否有条件 -->
+				<if test="criteria.valid">
+					<!-- 设置前后缀包裹，以and分隔 -->
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<!-- 遍历每一个criteria中的List<Criterion>自定义条件列表集合 -->
+						<foreach collection="criteria.criteria" item="criterion">
+							<!-- 有选择的插入，相当于switch -->
+							<choose>
+								<!-- 无数值数据，用于field is null和field is not null -->
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<!-- 单一数据 -->
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<!-- 两个数据，用于between和not between语句 -->
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<!-- 用于in和not in -->
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+
+	<sql id="Base_Column_List">
+		id,
+		r2_id
+	</sql>
+	<!-- 统计符合自定义条件的数据个数 -->
+	<select id="countByExample" parameterType="cn.bluesking.blog.model.entity.R2_equit_distExample"
+		resultType="java.lang.Integer">
+		select count(*) from r2_equit_dist
+		<!-- _parameter代表的时传入参数 -->
+		<!-- 自定义条件 -->
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+
+	<!-- 自定义条件删除数据 -->
+	<delete id="deleteByExample" parameterType="cn.bluesking.blog.model.entity.R2_equit_distExample">
+		delete from r2_equit_dist
+		<!-- _parameter代表的时传入参数 -->
+		<!-- 自定义条件 -->
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+
+	<!-- 根据主键删除单条数据 -->
+	<delete id="deleteByPrimaryKey">
+		delete from r2_equit_dist
+		<!-- 传入主键作为条件 -->
+		where
+		id = {#id, jdbcType=BIGINT} 
+	</delete>
+
+	<!-- 插入单条数据 -->
+	<insert id="insert" parameterType="cn.bluesking.blog.model.entity.R2_equit_dist">
+		insert into r2_equit_dist (
+			id,
+			r2_id
+		)
+		values (
+			#{id, jdbcType=BIGINT},
+			#{r2_id, jdbcType=BIGINT}
+		)
+	</insert>
+
+	<!-- 有选择的插入单条数据 -->
+	<insert id="insertSelective" parameterType="cn.bluesking.blog.model.entity.R2_equit_dist">
+		insert into r2_equit_dist
+		<!-- 前缀为"("、后缀为")"、去掉最后一个"," -->
+		<!-- 插入属性 -->
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="r2_id != null">
+				r2_id,
+			</if>
+		</trim>
+		<!-- 插入内容 -->
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id, jdbcType=BIGINT},
+			</if>
+			<if test="r2_id != null">
+				#{r2_id, jdbcType=BIGINT},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 查询符合自定义条件的数据 -->
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="cn.bluesking.blog.model.entity.R2_equit_distExample">
+		select
+		<!-- 判断是否使用distinct查询 -->
+		<if test="distinct">
+			distinct
+		</if>
+		<!-- 查询字段 -->
+		<include refid="Base_Column_List" />
+		from r2_equit_dist
+		<!-- 自定义条件 -->
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<!-- 判断是否指定排序从句 -->
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+
+	<!-- 根据主键查询单条数据 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from r2_equit_dist
+		<!-- #表示占位符、$表示拼接 -->
+		where
+		id = {#id, jdbcType=BIGINT} 
+	</select>
+
+	<!-- 自定义条件的有选择性的修改某些属性，可修改主键 -->
+	<update id="updateByExampleSelective">
+		update r2_equit_dist
+		<!-- 修改属性，可修改主键 -->
+		<set>
+			<if test="record.id != null">
+				id = #{record.id, jdbcType=BIGINT},
+			</if>
+			<if test="record.r2_id != null">
+				r2_id = #{record.r2_id, jdbcType=BIGINT},
+			</if>
+		</set>
+		<!-- 自定义条件 -->
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+
+	<!-- 自定义条件修改所有属性，可修改主键 -->
+	<update id="updateByExample">
+		update items
+		<!-- 修改属性，可修改主键 -->
+		set
+		id = #{id, jdbcType=BIGINT},
+		r2_id = #{r2_id, jdbcType=BIGINT}
+		<!-- 自定义条件 -->
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+
+	<!-- 通过主键有选择性的修改某该属性，不可以修改主键 -->
+	<update id="updateByPrimaryKeySelective" parameterType="cn.bluesking.blog.model.entity.R2_equit_dist">
+		update r2_equit_dist
+		<!-- 修改属性，不可以修改主键 -->
+		<set>
+			<if test="r2_id != null">
+				r2_id = #{r2_id, jdbcType=BIGINT},
+			</if>
+		</set>
+		<!-- 主键作为条件 -->
+		where
+		id = {#id, jdbcType=BIGINT} 
+	</update>
+
+	<!-- 通过主键修改属性，不可以修改主键 -->
+	<update id="updateByPrimaryKey" parameterType="cn.bluesking.blog.model.entity.R2_equit_dist">
+		update items
+		<!-- 修改属性，不可以修改主键 -->
+		set
+		r2_id = #{r2_id, jdbcType=BIGINT}
+		<!-- 主键作为条件 -->
+		where
+		id = {#id, jdbcType=BIGINT} 
+	</update>
+</mapper>

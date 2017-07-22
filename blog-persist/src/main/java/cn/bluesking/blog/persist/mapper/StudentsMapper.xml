@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bluesking.blog.persist.mapper.StudentsMapper" >
+
+	<!-- pojo类属性和对应表的结果集映射关系 -->
+	<resultMap id="BaseResultMap" type="cn.bluesking.blog.model.entity.Students">
+		<id column="SID" property="SID" jdbcType="VARCHAR" />
+		<result column="SNAME" property="SNAME" jdbcType="VARCHAR" />
+		<result column="SEX" property="SEX" jdbcType="VARCHAR" />
+		<result column="CARDNUMBER" property="CARDNUMBER" jdbcType="VARCHAR" />
+		<result column="PWD" property="PWD" jdbcType="VARCHAR" />
+		<result column="DEPARTMENT" property="DEPARTMENT" jdbcType="VARCHAR" />
+		<result column="PHONE" property="PHONE" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 条件从句 -->
+	<sql id="Example_Where_Clause">
+		<where>
+			<!-- 读取criteria列表集合中的元素 -->
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<!-- 判断criteria是否有条件 -->
+				<if test="criteria.valid">
+					<!-- 设置前后缀包裹，以and分隔 -->
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<!-- 遍历每一个criteria中的List<Criterion>自定义条件列表集合 -->
+						<foreach collection="criteria.criteria" item="criterion">
+							<!-- 有选择的插入，相当于switch -->
+							<choose>
+								<!-- 无数值数据，用于field is null和field is not null -->
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<!-- 单一数据 -->
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<!-- 两个数据，用于between和not between语句 -->
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<!-- 用于in和not in -->
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+
+	<!-- 条件从句 -->
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<!-- 读取criteria列表集合中的元素 -->
+			<foreach collection="example.oredCriteria" item="criteria" separator="or">
+				<!-- 判断criteria是否有条件 -->
+				<if test="criteria.valid">
+					<!-- 设置前后缀包裹，以and分隔 -->
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<!-- 遍历每一个criteria中的List<Criterion>自定义条件列表集合 -->
+						<foreach collection="criteria.criteria" item="criterion">
+							<!-- 有选择的插入，相当于switch -->
+							<choose>
+								<!-- 无数值数据，用于field is null和field is not null -->
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<!-- 单一数据 -->
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<!-- 两个数据，用于between和not between语句 -->
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<!-- 用于in和not in -->
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+
+	<sql id="Base_Column_List">
+		SID,
+		SNAME,
+		SEX,
+		CARDNUMBER,
+		PWD,
+		DEPARTMENT,
+		PHONE
+	</sql>
+	<!-- 统计符合自定义条件的数据个数 -->
+	<select id="countByExample" parameterType="cn.bluesking.blog.model.entity.StudentsExample"
+		resultType="java.lang.Integer">
+		select count(*) from students
+		<!-- _parameter代表的时传入参数 -->
+		<!-- 自定义条件 -->
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+
+	<!-- 自定义条件删除数据 -->
+	<delete id="deleteByExample" parameterType="cn.bluesking.blog.model.entity.StudentsExample">
+		delete from students
+		<!-- _parameter代表的时传入参数 -->
+		<!-- 自定义条件 -->
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+
+	<!-- 根据主键删除单条数据 -->
+	<delete id="deleteByPrimaryKey">
+		delete from students
+		<!-- 传入主键作为条件 -->
+		where
+		SID = {#SID, jdbcType=VARCHAR} 
+	</delete>
+
+	<!-- 插入单条数据 -->
+	<insert id="insert" parameterType="cn.bluesking.blog.model.entity.Students">
+		insert into students (
+			SID,
+			SNAME,
+			SEX,
+			CARDNUMBER,
+			PWD,
+			DEPARTMENT,
+			PHONE
+		)
+		values (
+			#{SID, jdbcType=VARCHAR},
+			#{SNAME, jdbcType=VARCHAR},
+			#{SEX, jdbcType=VARCHAR},
+			#{CARDNUMBER, jdbcType=VARCHAR},
+			#{PWD, jdbcType=VARCHAR},
+			#{DEPARTMENT, jdbcType=VARCHAR},
+			#{PHONE, jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<!-- 有选择的插入单条数据 -->
+	<insert id="insertSelective" parameterType="cn.bluesking.blog.model.entity.Students">
+		insert into students
+		<!-- 前缀为"("、后缀为")"、去掉最后一个"," -->
+		<!-- 插入属性 -->
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="SID != null">
+				SID,
+			</if>
+			<if test="SNAME != null">
+				SNAME,
+			</if>
+			<if test="SEX != null">
+				SEX,
+			</if>
+			<if test="CARDNUMBER != null">
+				CARDNUMBER,
+			</if>
+			<if test="PWD != null">
+				PWD,
+			</if>
+			<if test="DEPARTMENT != null">
+				DEPARTMENT,
+			</if>
+			<if test="PHONE != null">
+				PHONE,
+			</if>
+		</trim>
+		<!-- 插入内容 -->
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="SID != null">
+				#{SID, jdbcType=VARCHAR},
+			</if>
+			<if test="SNAME != null">
+				#{SNAME, jdbcType=VARCHAR},
+			</if>
+			<if test="SEX != null">
+				#{SEX, jdbcType=VARCHAR},
+			</if>
+			<if test="CARDNUMBER != null">
+				#{CARDNUMBER, jdbcType=VARCHAR},
+			</if>
+			<if test="PWD != null">
+				#{PWD, jdbcType=VARCHAR},
+			</if>
+			<if test="DEPARTMENT != null">
+				#{DEPARTMENT, jdbcType=VARCHAR},
+			</if>
+			<if test="PHONE != null">
+				#{PHONE, jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 查询符合自定义条件的数据 -->
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="cn.bluesking.blog.model.entity.StudentsExample">
+		select
+		<!-- 判断是否使用distinct查询 -->
+		<if test="distinct">
+			distinct
+		</if>
+		<!-- 查询字段 -->
+		<include refid="Base_Column_List" />
+		from students
+		<!-- 自定义条件 -->
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<!-- 判断是否指定排序从句 -->
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+
+	<!-- 根据主键查询单条数据 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from students
+		<!-- #表示占位符、$表示拼接 -->
+		where
+		SID = #{SID, jdbcType=VARCHAR}
+	</select>
+
+	<!-- 自定义条件的有选择性的修改某些属性，可修改主键 -->
+	<update id="updateByExampleSelective">
+		update students
+		<!-- 修改属性，可修改主键 -->
+		<set>
+			<if test="record.SID != null">
+				SID = #{record.SID, jdbcType=VARCHAR},
+			</if>
+			<if test="record.SNAME != null">
+				SNAME = #{record.SNAME, jdbcType=VARCHAR},
+			</if>
+			<if test="record.SEX != null">
+				SEX = #{record.SEX, jdbcType=VARCHAR},
+			</if>
+			<if test="record.CARDNUMBER != null">
+				CARDNUMBER = #{record.CARDNUMBER, jdbcType=VARCHAR},
+			</if>
+			<if test="record.PWD != null">
+				PWD = #{record.PWD, jdbcType=VARCHAR},
+			</if>
+			<if test="record.DEPARTMENT != null">
+				DEPARTMENT = #{record.DEPARTMENT, jdbcType=VARCHAR},
+			</if>
+			<if test="record.PHONE != null">
+				PHONE = #{record.PHONE, jdbcType=VARCHAR},
+			</if>
+		</set>
+		<!-- 自定义条件 -->
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+
+	<!-- 自定义条件修改所有属性，可修改主键 -->
+	<update id="updateByExample">
+		update items
+		<!-- 修改属性，可修改主键 -->
+		set
+		SID = #{SID, jdbcType=VARCHAR},
+		SNAME = #{SNAME, jdbcType=VARCHAR},
+		SEX = #{SEX, jdbcType=VARCHAR},
+		CARDNUMBER = #{CARDNUMBER, jdbcType=VARCHAR},
+		PWD = #{PWD, jdbcType=VARCHAR},
+		DEPARTMENT = #{DEPARTMENT, jdbcType=VARCHAR},
+		PHONE = #{PHONE, jdbcType=VARCHAR}
+		<!-- 自定义条件 -->
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+
+	<!-- 通过主键有选择性的修改某该属性，不可以修改主键 -->
+	<update id="updateByPrimaryKeySelective" parameterType="cn.bluesking.blog.model.entity.Students">
+		update students
+		<!-- 修改属性，不可以修改主键 -->
+		<set>
+			<if test="SNAME != null">
+				SNAME = #{SNAME, jdbcType=VARCHAR},
+			</if>
+			<if test="SEX != null">
+				SEX = #{SEX, jdbcType=VARCHAR},
+			</if>
+			<if test="CARDNUMBER != null">
+				CARDNUMBER = #{CARDNUMBER, jdbcType=VARCHAR},
+			</if>
+			<if test="PWD != null">
+				PWD = #{PWD, jdbcType=VARCHAR},
+			</if>
+			<if test="DEPARTMENT != null">
+				DEPARTMENT = #{DEPARTMENT, jdbcType=VARCHAR},
+			</if>
+			<if test="PHONE != null">
+				PHONE = #{PHONE, jdbcType=VARCHAR},
+			</if>
+		</set>
+		<!-- 主键作为条件 -->
+		where
+		SID = {#SID, jdbcType=VARCHAR} 
+	</update>
+
+	<!-- 通过主键修改属性，不可以修改主键 -->
+	<update id="updateByPrimaryKey" parameterType="cn.bluesking.blog.model.entity.Students">
+		update items
+		<!-- 修改属性，不可以修改主键 -->
+		set
+		SNAME = #{SNAME, jdbcType=VARCHAR},
+		SEX = #{SEX, jdbcType=VARCHAR},
+		CARDNUMBER = #{CARDNUMBER, jdbcType=VARCHAR},
+		PWD = #{PWD, jdbcType=VARCHAR},
+		DEPARTMENT = #{DEPARTMENT, jdbcType=VARCHAR},
+		PHONE = #{PHONE, jdbcType=VARCHAR}
+		<!-- 主键作为条件 -->
+		where
+		SID = {#SID, jdbcType=VARCHAR} 
+	</update>
+</mapper>
