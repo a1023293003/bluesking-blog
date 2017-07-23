@@ -1,4 +1,4 @@
-package cn.bluesking.blog.core.service;
+package cn.bluesking.blog.service.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +16,11 @@ public class TestDemoServiceImpl implements TestDemoService {
 	public void test() {
 		System.err.println("bean:" + mapper);
 		Students students = mapper.selectByPrimaryKey("1");
+		students.setPHONE("110");
+		mapper.updateByPrimaryKey(students);
+		int i = 1 / 0;
+		students.setPHONE("120");
+		mapper.updateByPrimaryKey(students);
 		System.err.println(students.toString());
 	}
 	

@@ -9,8 +9,8 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<packaging>jar</packaging>
-	<artifactId>blog-core</artifactId>
-	<name>blog-core</name>
+	<artifactId>blog-service</artifactId>
+	<name>blog-service</name>
 	<properties>
 		<!--指定Maven用什么编码来读取源码及文档 -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

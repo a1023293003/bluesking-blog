@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>测试</title>
+<title>404</title>
 </head>
 <body>
-	${data}
+	<h1>这里是404页面!</h1>
 </body>
 </html>

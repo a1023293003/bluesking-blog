@@ -8,7 +8,7 @@
 	<name>blog-root</name>
 	<!-- 子模块 -->
 	<modules>
-		<module>blog-core</module>
+		<module>blog-service</module>
 		<module>blog-commons</module>
 		<module>blog-model</module>
 		<module>blog-persist</module>
@@ -22,7 +22,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<bluesking.commons.version>0.0.1-SNAPSHOT</bluesking.commons.version>
 		<bluesking.web.version>0.0.1-SNAPSHOT</bluesking.web.version>
-		<bluesking.core.version>0.0.1-SNAPSHOT</bluesking.core.version>
+		<bluesking.service.version>0.0.1-SNAPSHOT</bluesking.service.version>
 		<bluesking.persist.version>0.0.1-SNAPSHOT</bluesking.persist.version>
 		<bluesking.model.version>0.0.1-SNAPSHOT</bluesking.model.version>
 		<junit.version>4.12</junit.version>
@@ -60,8 +60,8 @@
 			<!-- 核心模块(业务逻辑) -->
 			<dependency>
 				<groupId>cn.bluesking.blog</groupId>
-				<artifactId>blog-core</artifactId>
-				<version>${bluesking.core.version}</version>
+				<artifactId>blog-service</artifactId>
+				<version>${bluesking.service.version}</version>
 			</dependency>
 			<!-- 持久层模块 -->
 			<dependency>

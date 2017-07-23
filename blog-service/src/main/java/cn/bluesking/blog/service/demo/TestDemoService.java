@@ -1,4 +1,4 @@
-package cn.bluesking.blog.core.service;
+package cn.bluesking.blog.service.demo;
 
 public interface TestDemoService {
 	

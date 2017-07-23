@@ -3,8 +3,13 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
 	<display-name>blog-web</display-name>
+	
+	<!-- ====================================================================================== -->
+	<!-- 项目主页 -->
+	<!-- ====================================================================================== -->
+	
 	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
+		<welcome-file>/WEB-INF/view/index.jsp</welcome-file>
 	</welcome-file-list>
 
 	<!-- ====================================================================================== -->
@@ -82,5 +87,21 @@
 		<servlet-name>springMVC</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+
+	<!-- ====================================================================================== -->
+	<!-- 配置请求错误页面  -->
+	<!-- ====================================================================================== -->
+	
+	<!-- 请求目标不存在 -->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/view/error/noFound.jsp</location>
+	</error-page>
+	
+	<!-- 服务器抛出异常 -->
+	<error-page>
+		<error-code>500</error-code>
+		<location>/WEB-INF/view/error/exception.jsp</location>
+	</error-page>
 
 </web-app>

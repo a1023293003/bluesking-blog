@@ -19,7 +19,7 @@
 		<!-- 核心模块(业务逻辑) -->
 		<dependency>
 			<groupId>cn.bluesking.blog</groupId>
-			<artifactId>blog-core</artifactId>
+			<artifactId>blog-service</artifactId>
 		</dependency>
 		<!-- SpringMVC 基础组件 -->
 		<dependency>

@@ -322,7 +322,7 @@
 
 	<!-- 通过主键修改属性，不可以修改主键 -->
 	<update id="updateByPrimaryKey" parameterType="cn.bluesking.blog.model.entity.Students">
-		update items
+		update students
 		<!-- 修改属性，不可以修改主键 -->
 		set
 		SNAME = #{SNAME, jdbcType=VARCHAR},
@@ -333,6 +333,6 @@
 		PHONE = #{PHONE, jdbcType=VARCHAR}
 		<!-- 主键作为条件 -->
 		where
-		SID = {#SID, jdbcType=VARCHAR} 
+		SID = #{SID, jdbcType=VARCHAR} 
 	</update>
 </mapper>

@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>测试</title>
+<title>主页</title>
 </head>
 <body>
-	${data}
+	<h1>主页</h1>
 </body>
 </html>
