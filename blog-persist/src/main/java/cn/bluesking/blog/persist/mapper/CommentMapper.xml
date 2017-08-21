@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bluesking.blog.persist.mapper.CommentMapper" >
+
+	<!-- pojo类属性和对应表的结果集映射关系 -->
+	<resultMap id="BaseResultMap" type="cn.bluesking.blog.model.entity.Comment">
+		<id column="comment_no" property="commentNo" jdbcType="INTEGER" />
+		<result column="subject_no" property="subjectNo" jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="user_no" property="userNo" jdbcType="INTEGER" />
+		<result column="release_time" property="releaseTime" jdbcType="TIMESTAMP" />
+		<result column="reply_comment_no" property="replyCommentNo" jdbcType="INTEGER" />
+		<result column="reply_user_no" property="replyUserNo" jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- 条件从句 -->
+	<sql id="Example_Where_Clause">
+		<where>
+			<!-- 读取criteria列表集合中的元素 -->
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<!-- 判断criteria是否有条件 -->
+				<if test="criteria.valid">
+					<!-- 设置前后缀包裹，以and分隔 -->
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<!-- 遍历每一个criteria中的List<Criterion>自定义条件列表集合 -->
+						<foreach collection="criteria.criteria" item="criterion">
+							<!-- 有选择的插入，相当于switch -->
+							<choose>
+								<!-- 无数值数据，用于field is null和field is not null -->
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<!-- 单一数据 -->
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<!-- 两个数据，用于between和not between语句 -->
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<!-- 用于in和not in -->
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+
+	<!-- 条件从句 -->
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<!-- 读取criteria列表集合中的元素 -->
+			<foreach collection="example.oredCriteria" item="criteria" separator="or">
+				<!-- 判断criteria是否有条件 -->
+				<if test="criteria.valid">
+					<!-- 设置前后缀包裹，以and分隔 -->
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<!-- 遍历每一个criteria中的List<Criterion>自定义条件列表集合 -->
+						<foreach collection="criteria.criteria" item="criterion">
+							<!-- 有选择的插入，相当于switch -->
+							<choose>
+								<!-- 无数值数据，用于field is null和field is not null -->
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<!-- 单一数据 -->
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<!-- 两个数据，用于between和not between语句 -->
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<!-- 用于in和not in -->
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+
+	<sql id="Base_Column_List">
+		comment_no,
+		subject_no,
+		content,
+		user_no,
+		release_time,
+		reply_comment_no,
+		reply_user_no
+	</sql>
+	<!-- 统计符合自定义条件的数据个数 -->
+	<select id="countByExample" parameterType="cn.bluesking.blog.model.entity.CommentExample"
+		resultType="java.lang.Integer">
+		select count(*) from comment
+		<!-- _parameter代表的时传入参数 -->
+		<!-- 自定义条件 -->
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+
+	<!-- 自定义条件删除数据 -->
+	<delete id="deleteByExample" parameterType="cn.bluesking.blog.model.entity.CommentExample">
+		delete from comment
+		<!-- _parameter代表的时传入参数 -->
+		<!-- 自定义条件 -->
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+
+	<!-- 根据主键删除单条数据 -->
+	<delete id="deleteByPrimaryKey">
+		delete from comment
+		<!-- 传入主键作为条件 -->
+		where
+		comment_no = #{commentNo, jdbcType=INTEGER} 
+	</delete>
+
+	<!-- 插入单条数据 -->
+	<insert id="insert" parameterType="cn.bluesking.blog.model.entity.Comment">
+		insert into comment (
+			comment_no,
+			subject_no,
+			content,
+			user_no,
+			release_time,
+			reply_comment_no,
+			reply_user_no
+		)
+		values (
+			#{commentNo, jdbcType=INTEGER},
+			#{subjectNo, jdbcType=INTEGER},
+			#{content, jdbcType=VARCHAR},
+			#{userNo, jdbcType=INTEGER},
+			#{releaseTime, jdbcType=TIMESTAMP},
+			#{replyCommentNo, jdbcType=INTEGER},
+			#{replyUserNo, jdbcType=INTEGER}
+		)
+	</insert>
+
+	<!-- 有选择的插入单条数据 -->
+	<insert id="insertSelective" parameterType="cn.bluesking.blog.model.entity.Comment">
+		insert into comment
+		<!-- 前缀为"("、后缀为")"、去掉最后一个"," -->
+		<!-- 插入属性 -->
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="commentNo != null">
+				commentNo,
+			</if>
+			<if test="subjectNo != null">
+				subjectNo,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+			<if test="userNo != null">
+				userNo,
+			</if>
+			<if test="releaseTime != null">
+				releaseTime,
+			</if>
+			<if test="replyCommentNo != null">
+				replyCommentNo,
+			</if>
+			<if test="replyUserNo != null">
+				replyUserNo,
+			</if>
+		</trim>
+		<!-- 插入内容 -->
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="commentNo != null">
+				#{commentNo, jdbcType=INTEGER},
+			</if>
+			<if test="subjectNo != null">
+				#{subjectNo, jdbcType=INTEGER},
+			</if>
+			<if test="content != null">
+				#{content, jdbcType=VARCHAR},
+			</if>
+			<if test="userNo != null">
+				#{userNo, jdbcType=INTEGER},
+			</if>
+			<if test="releaseTime != null">
+				#{releaseTime, jdbcType=TIMESTAMP},
+			</if>
+			<if test="replyCommentNo != null">
+				#{replyCommentNo, jdbcType=INTEGER},
+			</if>
+			<if test="replyUserNo != null">
+				#{replyUserNo, jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 查询符合自定义条件的数据 -->
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="cn.bluesking.blog.model.entity.CommentExample">
+		select
+		<!-- 判断是否使用distinct查询 -->
+		<if test="distinct">
+			distinct
+		</if>
+		<!-- 查询字段 -->
+		<include refid="Base_Column_List" />
+		from comment
+		<!-- 自定义条件 -->
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<!-- 判断是否指定排序从句 -->
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+
+	<!-- 根据主键查询单条数据 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from comment
+		<!-- #表示占位符、$表示拼接 -->
+		where
+		comment_no = #{commentNo, jdbcType=INTEGER} 
+	</select>
+
+	<!-- 自定义条件的有选择性的修改某些属性，可修改主键 -->
+	<update id="updateByExampleSelective">
+		update comment
+		<!-- 修改属性，可修改主键 -->
+		<set>
+			<if test="record.commentNo != null">
+				commentNo = #{record.commentNo, jdbcType=INTEGER},
+			</if>
+			<if test="record.subjectNo != null">
+				subjectNo = #{record.subjectNo, jdbcType=INTEGER},
+			</if>
+			<if test="record.content != null">
+				content = #{record.content, jdbcType=VARCHAR},
+			</if>
+			<if test="record.userNo != null">
+				userNo = #{record.userNo, jdbcType=INTEGER},
+			</if>
+			<if test="record.releaseTime != null">
+				releaseTime = #{record.releaseTime, jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.replyCommentNo != null">
+				replyCommentNo = #{record.replyCommentNo, jdbcType=INTEGER},
+			</if>
+			<if test="record.replyUserNo != null">
+				replyUserNo = #{record.replyUserNo, jdbcType=INTEGER},
+			</if>
+		</set>
+		<!-- 自定义条件 -->
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+
+	<!-- 自定义条件修改所有属性，可修改主键 -->
+	<update id="updateByExample">
+		update comment
+		<!-- 修改属性，可修改主键 -->
+		set
+		commentNo = #{commentNo, jdbcType=INTEGER},
+		subjectNo = #{subjectNo, jdbcType=INTEGER},
+		content = #{content, jdbcType=VARCHAR},
+		userNo = #{userNo, jdbcType=INTEGER},
+		releaseTime = #{releaseTime, jdbcType=TIMESTAMP},
+		replyCommentNo = #{replyCommentNo, jdbcType=INTEGER},
+		replyUserNo = #{replyUserNo, jdbcType=INTEGER}
+		<!-- 自定义条件 -->
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+
+	<!-- 通过主键有选择性的修改某该属性，不可以修改主键 -->
+	<update id="updateByPrimaryKeySelective" parameterType="cn.bluesking.blog.model.entity.Comment">
+		update comment
+		<!-- 修改属性，不可以修改主键 -->
+		<set>
+			<if test="subjectNo != null">
+				subjectNo = #{subjectNo, jdbcType=INTEGER},
+			</if>
+			<if test="content != null">
+				content = #{content, jdbcType=VARCHAR},
+			</if>
+			<if test="userNo != null">
+				userNo = #{userNo, jdbcType=INTEGER},
+			</if>
+			<if test="releaseTime != null">
+				releaseTime = #{releaseTime, jdbcType=TIMESTAMP},
+			</if>
+			<if test="replyCommentNo != null">
+				replyCommentNo = #{replyCommentNo, jdbcType=INTEGER},
+			</if>
+			<if test="replyUserNo != null">
+				replyUserNo = #{replyUserNo, jdbcType=INTEGER},
+			</if>
+		</set>
+		<!-- 主键作为条件 -->
+		where
+		comment_no = #{commentNo, jdbcType=INTEGER} 
+	</update>
+
+	<!-- 通过主键修改属性，不可以修改主键 -->
+	<update id="updateByPrimaryKey" parameterType="cn.bluesking.blog.model.entity.Comment">
+		update comment
+		<!-- 修改属性，不可以修改主键 -->
+		set
+		subjectNo = #{subjectNo, jdbcType=INTEGER},
+		content = #{content, jdbcType=VARCHAR},
+		userNo = #{userNo, jdbcType=INTEGER},
+		releaseTime = #{releaseTime, jdbcType=TIMESTAMP},
+		replyCommentNo = #{replyCommentNo, jdbcType=INTEGER},
+		replyUserNo = #{replyUserNo, jdbcType=INTEGER}
+		<!-- 主键作为条件 -->
+		where
+		comment_no = #{commentNo, jdbcType=INTEGER} 
+	</update>
+</mapper>
