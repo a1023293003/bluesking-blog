@@ -23,7 +23,7 @@ public class TestDemo {
 	private static final Logger _LOG = LoggerFactory.getLogger(TestDemo.class);
 	
 	@Autowired
-	private TestDemoService service;
+	private TestDemoService testDemoService;
 	
 	@LogInfo("测试")
 	@RequestMapping("/test/{id}")
